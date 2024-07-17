@@ -16,16 +16,14 @@ public class Scr_Interact_NPC : Scr_Interactable
     public int DeliveryDifficulty;
     public bool hasQuest = false;    
 
-    private DialogueManager DlgManager;  
-    private InventoryManager invManager;
+    public DialogueManager DlgManager;  
+    public InventoryManager invManager;
 
     public GameObject QuestidentifierOBJ;
 
     void Start(){
         //Sets managers
-        DlgManager = GameObject.Find("GameManager").GetComponent<GameManager>().DialogueUI.GetComponent<DialogueManager>();        
-        questMngr = GameObject.Find("GameManager").GetComponent<GameManager>().QuestManager.GetComponent<QuestManager>();
-        invManager = GameObject.Find("GameManager").GetComponent<GameManager>().InventoryManager.GetComponent<InventoryManager>();
+
         CheckIfShowQuestIdentifier();
     }
     public override void Interact()
@@ -35,7 +33,7 @@ public class Scr_Interact_NPC : Scr_Interactable
             invManager.Additem(QuestItemToDeliver);
             QuestData newquest = new QuestData();
 
-            //sets up randomized quest and target
+            //sets up randomized quest ID and target
             newquest.QuestID = (UnityEngine.Random.Range(1,100)).ToString();
             Item itemToAdd = invManager.ItemDatabase.Find(item => item.ItemID == QuestItemToDeliver);
             int rnd = UnityEngine.Random.Range(0, (NPCPool.transform.childCount));
@@ -52,6 +50,7 @@ public class Scr_Interact_NPC : Scr_Interactable
             newquest.QuestTarget = npcTarget;
             //sets initial distance to delivery target
             newquest.Distance = Vector3.Distance(gameObject.transform.position,npcTarget.transform.position);
+            newquest.QuestReward = (int)newquest.Distance/2;
             //quest item id
             newquest.QuestItem = QuestItemToDeliver;
 
@@ -89,6 +88,15 @@ public class Scr_Interact_NPC : Scr_Interactable
         else{
             QuestidentifierOBJ.SetActive(false);
         }
+    }
+
+    public void MakeQuestGiver(){
+        int randItemInd = UnityEngine.Random.Range(0, invManager.ItemDatabase.Count-1); 
+        Debug.Log(randItemInd);
+        QuestItemToDeliver = invManager.ItemDatabase[randItemInd].ItemID;
+        hasQuest = true;
+        CheckIfShowQuestIdentifier();
+
     }
 
 }

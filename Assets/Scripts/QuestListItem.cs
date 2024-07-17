@@ -16,7 +16,7 @@ public class QuestListItem : MonoBehaviour
     }
     void Update(){
         questData.QuestTime = Timer.GetCurrentTime();      
-        questTimerTxt.text = ((int)questData.QuestTime).ToString(); 
+        questTimerTxt.text = Mathf.Ceil(questData.QuestTime).ToString(); 
         questDistanceTxt.text = ((int)questData.Distance).ToString() + " m";
     }
     public void SetData(QuestData qD){

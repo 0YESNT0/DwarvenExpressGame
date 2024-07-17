@@ -21,7 +21,7 @@ public class DialogueManager : MonoBehaviour
     //quest give
 
     public void StartDialogue(List<string> dlgList, string talker){
-        dialogueList = dlgList;
+        dialogueList = dlgList;        
         talkerName = talker;
         Player.canMove = false;
         Player.InteractSystem.canInteract = false;
@@ -34,7 +34,14 @@ public class DialogueManager : MonoBehaviour
     }
 
     public void UpdateDialogueDisp(){
-        dialogueTalkerName.text = talkerName;
+        if(talkerName == null){
+            dialogueTalkerName.gameObject.SetActive(false);            
+        }
+        else{
+            dialogueTalkerName.gameObject.SetActive(true); 
+            dialogueTalkerName.text = talkerName;                    
+        }
+        
         dialogueText.text = dialogueList[currentDialogueLine];
         
     }

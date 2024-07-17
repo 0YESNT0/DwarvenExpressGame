@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Dwarven Express.sln"
+    "dotnet.defaultSolution": "DwarvenExpressGame.sln"
 }

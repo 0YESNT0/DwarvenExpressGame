@@ -11,7 +11,6 @@ public class ItemSlot : MonoBehaviour
     public UnityEngine.UI.Image ItemIcon;
     void Start(){
         ClearSlot();
-        Debug.Log("slot");
     }
     public void SetItem(Item item){        
         ItemData = item;
