@@ -24,7 +24,10 @@ public class GameManager : MonoBehaviour
     }
 
     void Update(){
-        GameOverCheck();
+        if(QuestManager.GetComponent<QuestManager>().AllowGameOverCheck){
+            GameOverCheck();
+        }
+        
     }
     public void GameOverCheck(){
         if((QuestManager.GetComponent<QuestManager>().GlobalTimerCurrentValue <= 0 || QuestManager.GetComponent<QuestManager>().FailedQuests >= 3) && isLose == false){
@@ -46,16 +49,6 @@ public class GameManager : MonoBehaviour
             }
         }
         
-    }
-
-    public void QuitBTN(){
-
-    }
-    public void MainMenuBTN(){
-
-    }
-    public void PlayAgainTBN(){
-
-    }
+    }    
 
 }

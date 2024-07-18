@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Unity.VisualStudio.Editor;
 using UnityEditor.Animations;
 using UnityEngine;
+using TMPro;
 
 [System.Serializable]
 public class Item
@@ -16,9 +17,10 @@ public class Item
 public class InventoryManager : MonoBehaviour
 {
     public List<Item> ItemDatabase;
-    public int TotalWeight;
     public GameObject Player;
     public GameObject Inventory;
+    public TextMeshProUGUI WeightTXT; 
+    public GameObject InventorySlotPrefab;
 
     public void Additem(string id){
         Item itemToAdd = ItemDatabase.Find(item => item.ItemID == id);
@@ -26,6 +28,7 @@ public class InventoryManager : MonoBehaviour
         if(slot != null){            
             slot.SetItem(itemToAdd);
         }
+        updateInvWeight();
         
     }
     public ItemSlot Hasitem(string id){
@@ -43,7 +46,8 @@ public class InventoryManager : MonoBehaviour
 
     public void RemoveItem(string id){
         ItemSlot slot = Hasitem(id);
-        slot.ClearSlot();        
+        slot.ClearSlot(); 
+        updateInvWeight();       
     }
 
     public ItemSlot HasEmptySlot(){
@@ -54,6 +58,27 @@ public class InventoryManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public void updateInvWeight(){ 
+        int TempWeight = 0;       
+        foreach(Transform child in Inventory.transform){
+            if(child.GetComponent<ItemSlot>().ItemData != null){
+                TempWeight += child.GetComponent<ItemSlot>().ItemData.Weight;
+            }
+        }
+        Player.GetComponent<PlayerController>().SetCurrentWeight(TempWeight);
+        WeightTXT.text = ((int)TempWeight).ToString() + "/" + (Player.GetComponent<PlayerController>().WeightCapBase + Player.GetComponent<PlayerController>().WeightCapMod).ToString();
+
+    }
+    public void SetInvSlots(int Count){
+        while(Inventory.transform.childCount < Count){
+            GameObject newObject = Instantiate(InventorySlotPrefab);
+                newObject.transform.SetParent(Inventory.transform);
+                newObject.transform.localScale = new Vector3(1,1,1);
+                newObject.SetActive(false); 
+        }
+
     }
 }
 

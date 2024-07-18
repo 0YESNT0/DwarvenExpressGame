@@ -17,24 +17,40 @@ public class PlayerController : MonoBehaviour
     float rotationX = 0;
     [Header("Values")]
     public float runningSpeed = 11.5f;
-    public float walkingSpeed = 4.0f;
-    public float jumpSpeed = 1.0f;
+    
+    
     public float gravity = 20.0f;
     public float gravityscale = 1.0f;
-   
     public float lookSpeed = 2.0f;
     public float lookXLimit = 45.0f;
 
-    [Header("Player Stats")]
+    [Header("Player Base Stats")]
+    public float walkingSpeed;
+    public int inventorySlots = 2;
+    public int WeightCapBase = 50;
+    public float jumpHeight;
+
+    [Header("Player Stats Increase Value")]
+    public float walkingspeedIncrease = 0.25f;
+    public int inventorySlotsIncrease = 1;
+    public int WeightCapIncrease = 25;
+    public float JumpHeightIncrease = 0.25f;
+
+    [Header("Player Stats Modifier")]
     public float walkingspeedMod = 0;
-    public float inventorySlots = 2;
-    public float WrightCapMod = 50;
+    public int inventorySlotsMod = 0;
+    public int WeightCapMod = 0;
     public float JumpHeightMod = 0;
+
+    public int currentWeight = 0;
+    public float currentwalkSpeed = 0;
+
+    public float overEncumberedSpeedReduction = 50;
 
     [HideInInspector]
     public bool canMove = true;
     
-
+    public InventoryManager InvManager;
     //private variables
     //reference to location of where the player holds the key
  
@@ -44,7 +60,9 @@ public class PlayerController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();                
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;        
+        Cursor.visible = false; 
+        currentWeight = 0;  
+        InvManager.SetInvSlots(inventorySlots);                     
     }
     
     // Update is called once per frame
@@ -52,10 +70,18 @@ public class PlayerController : MonoBehaviour
     {
         UnityEngine.Vector3 forward = transform.TransformDirection(UnityEngine.Vector3.forward);
         UnityEngine.Vector3 right = transform.TransformDirection(UnityEngine.Vector3.right);
+        Debug.Log(currentwalkSpeed);
+        if(currentWeight > (WeightCapBase + WeightCapMod)){
+            currentwalkSpeed = (walkingSpeed + walkingspeedMod) * (overEncumberedSpeedReduction/100);
+        }
+        else{
+            currentwalkSpeed = walkingSpeed + walkingspeedMod;
+        }
+        
 
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        float cursSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
-        float cursSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
+        float cursSpeedX = canMove ? (isRunning ? runningSpeed : currentwalkSpeed) * Input.GetAxis("Vertical") : 0;
+        float cursSpeedY = canMove ? (isRunning ? runningSpeed : currentwalkSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * cursSpeedX) + (right * cursSpeedY);
         moveDirection.y = movementDirectionY;
@@ -68,7 +94,7 @@ public class PlayerController : MonoBehaviour
 
         if(canMove){
             if(Input.GetButton("Jump") && characterController.isGrounded){
-                moveDirection.y = jumpSpeed;
+                moveDirection.y = jumpHeight + JumpHeightMod;
             }
             else{
                 moveDirection.y = movementDirectionY;
@@ -84,6 +110,10 @@ public class PlayerController : MonoBehaviour
         }
 
 
+    }
+
+    public void SetCurrentWeight(int totalweight){
+        currentWeight = totalweight;
     }
     //checks for closest interactable object
     

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
@@ -44,15 +45,17 @@ public class QuestManager : MonoBehaviour
 
     public int questGiverPopulationPercentage = 25;
 
+    public bool AllowGameOverCheck = true;
+
     void Start(){
         QuestUI.SetActive(false);
         ClearWaypoints();
         FailedQuestCountTXT.text = FailedQuests.ToString();
         TotalGoldTXT.text = TotalGold.ToString();
         RandomizeQuestGiver();
-        GameTimer.SetTime(GlobalTimerBaseValue);
-        GameTimer.StartTimer();
+        GameTimer.SetTime(GlobalTimerBaseValue);        
         GlobalTimerCurrentValue = (int)GameTimer.GetCurrentTime();
+        inventoryManager.updateInvWeight();
     }
 
     void Update(){        
@@ -251,6 +254,9 @@ public class QuestManager : MonoBehaviour
         }
         //check amount of quest giver first
         //make a quest giver once a quest is finished or failed
+    }
+    public void StartGameTimer(){
+        GameTimer.StartTimer();
     }
 }
 

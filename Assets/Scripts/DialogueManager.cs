@@ -16,6 +16,7 @@ public class DialogueManager : MonoBehaviour
     private int currentDialogueLine = 0;
     private List<string> dialogueList;
     private string talkerName;
+    private GameObject UIToOpen;
     
     //trade list
     //quest give
@@ -30,6 +31,25 @@ public class DialogueManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;   
         QuestManager.PauseAllTimers();     
+                     
+    }
+    public void StartDialogue(List<string> dlgList, string talker, GameObject OpenUI){
+        if(dlgList.Count > 0){
+            dialogueList = dlgList;        
+            talkerName = talker;
+            Player.canMove = false;
+            Player.InteractSystem.canInteract = false;
+            UpdateDialogueDisp(); 
+            dialogueUI.SetActive(true);  
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;   
+            QuestManager.PauseAllTimers(); 
+            UIToOpen = OpenUI;
+        }
+        else{
+            Debug.Log("Dialogue Is empty");
+        }
+        
                      
     }
 
@@ -60,13 +80,21 @@ public class DialogueManager : MonoBehaviour
         dialogueList = null;
         dialogueUI.SetActive(false);
 
-        Player.InteractSystem.canInteract = true;
-        Player.canMove = true;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;  
-
-        QuestManager.UpdateQuestList();
-        QuestManager.ResumeAllTimers();
+         
+        
+        if(UIToOpen != null){
+            UIToOpen.SetActive(true);
+            UIToOpen = null;
+        }
+        else{
+            Player.InteractSystem.canInteract = true;
+            Player.canMove = true;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false; 
+            QuestManager.UpdateQuestList();
+            QuestManager.ResumeAllTimers();
+        }
+        
         
     }
 

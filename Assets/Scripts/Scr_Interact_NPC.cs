@@ -14,7 +14,8 @@ public class Scr_Interact_NPC : Scr_Interactable
 
     public string QuestItemToDeliver;
     public int DeliveryDifficulty;
-    public bool hasQuest = false;    
+    public bool hasQuest = false; 
+    public int QuestTimer = 100;   
 
     public DialogueManager DlgManager;  
     public InventoryManager invManager;
@@ -28,7 +29,7 @@ public class Scr_Interact_NPC : Scr_Interactable
     }
     public override void Interact()
     {
-        if(hasQuest){
+        if(hasQuest && invManager.HasEmptySlot() != null){
             //adds item when npc has delivery quest
             invManager.Additem(QuestItemToDeliver);
             QuestData newquest = new QuestData();
@@ -45,7 +46,7 @@ public class Scr_Interact_NPC : Scr_Interactable
             
             newquest.QuestInfo = "Deliver " + itemToAdd.ItemName + " to " + npcTarget.GetComponent<Scr_Interact_NPC>().id;
             //need to work on randomizing quest time randomization
-            newquest.QuestTime = 5;
+            newquest.QuestTime = QuestTimer;
             //sets quest target
             newquest.QuestTarget = npcTarget;
             //sets initial distance to delivery target
