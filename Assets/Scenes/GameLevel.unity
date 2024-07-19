@@ -11208,7 +11208,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 830425927}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1687583645}
+        m_TargetAssemblyTypeName: MenuButtonScript, Assembly-CSharp
+        m_MethodName: PlayGameBTN
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &830425927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20861,6 +20873,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1687583644}
+  - component: {fileID: 1687583645}
   m_Layer: 5
   m_Name: GameOverMessage
   m_TagString: Untagged
@@ -20895,6 +20908,25 @@ RectTransform:
   m_AnchoredPosition: {x: -3.5879943, y: -4.9190044}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1687583645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687583643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0939200241629d543800c21e09249dbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SceneToLoad: GameLevel
+  ActivatePanels: []
+  DeactivatePanels: []
+  DurationSelectionPanel: {fileID: 0}
+  Qmanager: {fileID: 0}
+  DialogueM: {fileID: 0}
+  gManager: {fileID: 0}
 --- !u!1 &1688210567
 GameObject:
   m_ObjectHideFlags: 0
@@ -23934,7 +23966,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1981717161}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1687583645}
+        m_TargetAssemblyTypeName: MenuButtonScript, Assembly-CSharp
+        m_MethodName: QuitBTN
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1981717161
 MonoBehaviour:
   m_ObjectHideFlags: 0
