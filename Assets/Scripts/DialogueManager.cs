@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,38 +6,50 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[System.Serializable]
+public class DialogueLine
+{
+    public string TalkerName;
+    public string DialogueText;
+}
+
+
 public class DialogueManager : MonoBehaviour
 {
     public GameObject dialogueUI;
     public TextMeshProUGUI dialogueText;
     public TextMeshProUGUI dialogueTalkerName;
+    public GameObject dialogueTalkerNameBG;
     public PlayerController Player;
     public QuestManager QuestManager;
 
     private int currentDialogueLine = 0;
-    private List<string> dialogueList;
+    private List<DialogueLine> dialogueList;
     private string talkerName;
-    private GameObject UIToOpen;
-    
+    private List<GameObject> UIToOpenList;
+    private List<GameObject> UIToCloseList;
     //trade list
     //quest give
 
-    public void StartDialogue(List<string> dlgList, string talker){
-        dialogueList = dlgList;        
-        talkerName = talker;
-        Player.canMove = false;
-        Player.InteractSystem.canInteract = false;
-        UpdateDialogueDisp(); 
-        dialogueUI.SetActive(true);  
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;   
-        QuestManager.PauseAllTimers();     
-                     
-    }
-    public void StartDialogue(List<string> dlgList, string talker, GameObject OpenUI){
+    public void StartDialogue(List<DialogueLine> dlgList){
         if(dlgList.Count > 0){
             dialogueList = dlgList;        
-            talkerName = talker;
+            Player.canMove = false;
+            Player.InteractSystem.canInteract = false;
+            UpdateDialogueDisp(); 
+            dialogueUI.SetActive(true);  
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;   
+            QuestManager.PauseAllTimers();   
+        }
+        else{
+            Debug.Log("Dialogue Is empty");
+        }    
+                     
+    }
+    public void StartDialogue(List<DialogueLine> dlgList, List<GameObject> UIToOpen){
+        if(dlgList.Count > 0){
+            dialogueList = dlgList;        
             Player.canMove = false;
             Player.InteractSystem.canInteract = false;
             UpdateDialogueDisp(); 
@@ -44,7 +57,26 @@ public class DialogueManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;   
             QuestManager.PauseAllTimers(); 
-            UIToOpen = OpenUI;
+            UIToOpenList = UIToOpen;            
+        }
+        else{
+            Debug.Log("Dialogue Is empty");
+        }
+        
+                     
+    }
+    public void StartDialogue(List<DialogueLine> dlgList, List<GameObject> UIToOpen,List<GameObject> UIToClose){
+        if(dlgList.Count > 0){
+            dialogueList = dlgList;        
+            Player.canMove = false;
+            Player.InteractSystem.canInteract = false;
+            UpdateDialogueDisp(); 
+            dialogueUI.SetActive(true);  
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;   
+            QuestManager.PauseAllTimers(); 
+            UIToOpenList = UIToOpen;
+            UIToCloseList = UIToClose;           
         }
         else{
             Debug.Log("Dialogue Is empty");
@@ -54,15 +86,15 @@ public class DialogueManager : MonoBehaviour
     }
 
     public void UpdateDialogueDisp(){
-        if(talkerName == null){
-            dialogueTalkerName.gameObject.SetActive(false);            
+        if(dialogueList[currentDialogueLine].TalkerName == String.Empty){
+            dialogueTalkerNameBG.gameObject.SetActive(false);            
         }
         else{
-            dialogueTalkerName.gameObject.SetActive(true); 
-            dialogueTalkerName.text = talkerName;                    
+            dialogueTalkerNameBG.gameObject.SetActive(true); 
+            dialogueTalkerName.text = dialogueList[currentDialogueLine].TalkerName;                    
         }
         
-        dialogueText.text = dialogueList[currentDialogueLine];
+        dialogueText.text = dialogueList[currentDialogueLine].DialogueText;
         
     }
     public void NextDialogueLine(){
@@ -82,9 +114,11 @@ public class DialogueManager : MonoBehaviour
 
          
         
-        if(UIToOpen != null){
-            UIToOpen.SetActive(true);
-            UIToOpen = null;
+        if(UIToOpenList != null){
+            Debug.Log("Opening UI");
+            foreach(GameObject obj in UIToOpenList){
+                obj.SetActive(true);
+            }
         }
         else{
             Player.InteractSystem.canInteract = true;
@@ -94,7 +128,13 @@ public class DialogueManager : MonoBehaviour
             QuestManager.UpdateQuestList();
             QuestManager.ResumeAllTimers();
         }
-        
+        if(UIToCloseList != null){
+            foreach(GameObject obj in UIToCloseList){
+                obj.SetActive(false);
+            }
+        }
+        UIToOpenList = null;
+        UIToCloseList = null;
         
     }
 

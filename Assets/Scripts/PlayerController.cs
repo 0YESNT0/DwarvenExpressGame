@@ -50,9 +50,6 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public bool canMove = true;
     
-    public InventoryManager InvManager;
-    //private variables
-    //reference to location of where the player holds the key
  
 
     // Start is called before the first frame update
@@ -61,8 +58,7 @@ public class PlayerController : MonoBehaviour
         characterController = GetComponent<CharacterController>();                
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false; 
-        currentWeight = 0;  
-        InvManager.SetInvSlots(inventorySlots);                     
+        currentWeight = 0;                     
     }
     
     // Update is called once per frame
@@ -70,7 +66,6 @@ public class PlayerController : MonoBehaviour
     {
         UnityEngine.Vector3 forward = transform.TransformDirection(UnityEngine.Vector3.forward);
         UnityEngine.Vector3 right = transform.TransformDirection(UnityEngine.Vector3.right);
-        Debug.Log(currentwalkSpeed);
         if(currentWeight > (WeightCapBase + WeightCapMod)){
             currentwalkSpeed = (walkingSpeed + walkingspeedMod) * (overEncumberedSpeedReduction/100);
         }

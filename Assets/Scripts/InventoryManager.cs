@@ -22,6 +22,9 @@ public class InventoryManager : MonoBehaviour
     public TextMeshProUGUI WeightTXT; 
     public GameObject InventorySlotPrefab;
 
+    void Start(){
+        SetInvSlots(Player.GetComponent<PlayerController>().inventorySlots);
+    }
     public void Additem(string id){
         Item itemToAdd = ItemDatabase.Find(item => item.ItemID == id);
         ItemSlot slot = HasEmptySlot();
@@ -76,7 +79,7 @@ public class InventoryManager : MonoBehaviour
             GameObject newObject = Instantiate(InventorySlotPrefab);
                 newObject.transform.SetParent(Inventory.transform);
                 newObject.transform.localScale = new Vector3(1,1,1);
-                newObject.SetActive(false); 
+                newObject.SetActive(true); 
         }
 
     }

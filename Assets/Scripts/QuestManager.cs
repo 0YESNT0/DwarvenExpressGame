@@ -52,9 +52,7 @@ public class QuestManager : MonoBehaviour
         ClearWaypoints();
         FailedQuestCountTXT.text = FailedQuests.ToString();
         TotalGoldTXT.text = TotalGold.ToString();
-        RandomizeQuestGiver();
-        GameTimer.SetTime(GlobalTimerBaseValue);        
-        GlobalTimerCurrentValue = (int)GameTimer.GetCurrentTime();
+        RandomizeQuestGiver();                  
         inventoryManager.updateInvWeight();
     }
 
@@ -66,6 +64,12 @@ public class QuestManager : MonoBehaviour
         CheckQuestTimers();  
         UpdateGlobalTimer();      
         
+    }
+
+    public void SetGameTimer(int value){
+        GlobalTimerBaseValue = value;
+        GameTimer.SetTime(GlobalTimerBaseValue);   
+        GlobalTimerCurrentValue = (int)GameTimer.GetCurrentTime();   
     }
 
     public void UpdateQuestList(){
@@ -101,9 +105,8 @@ public class QuestManager : MonoBehaviour
         UpdateQuestList();
     }
     public void CompleteQuest(string questID){
-        Debug.Log("Completed a quest");
         QuestData value = PlayerQuests.Find(item => item.QuestID == questID);  
-        AddGold(value.QuestReward);      
+        AddGold(value.QuestReward + (int)value.QuestTime);      
         PlayerQuests.Remove(value);
         UpdateQuestList(); 
         RandomizeQuestGiver();                    
@@ -215,7 +218,11 @@ public class QuestManager : MonoBehaviour
     public void AddGold(int gold){   
         TotalGold += gold;     
         TotalGoldTXT.text = TotalGold.ToString();
-    }    
+    } 
+    public void RemoveGold(int gold){   
+        TotalGold -= gold;     
+        TotalGoldTXT.text = TotalGold.ToString();
+    }   
 
     public void UpdateGlobalTimer(){
         GlobalTimerCurrentValue = (int)GameTimer.GetCurrentTime();
@@ -244,14 +251,23 @@ public class QuestManager : MonoBehaviour
         return questCount;
     }
     public void RandomizeQuestGiver(){
-        int questGiverMaxCount = (int)Mathf.Ceil((NPCPool.transform.childCount) * (questGiverPopulationPercentage/100f));        
-        while(GetQuestCount() < questGiverMaxCount){
+        int questGiverMaxCount = (int)Mathf.Ceil((NPCPool.transform.childCount) * (questGiverPopulationPercentage/100f));
+        int randomizationattempt = 0;        
+        while(GetQuestCount() < questGiverMaxCount && randomizationattempt < questGiverMaxCount){
             int rnd = UnityEngine.Random.Range(0, (NPCPool.transform.childCount));
             Scr_Interact_NPC npcTarget = NPCPool.transform.GetChild(rnd).GetComponent<Scr_Interact_NPC>();
             if(npcTarget.hasQuest == false && npcTarget.isQuestTarget == false){
-                npcTarget.MakeQuestGiver();                
+                npcTarget.MakeQuestGiver();              
             }
+            else{
+                randomizationattempt++;
+            }
+            
         }
+        if(randomizationattempt >= questGiverMaxCount ){
+            Debug.Log("Failed to make a quest giver");
+        }
+        
         //check amount of quest giver first
         //make a quest giver once a quest is finished or failed
     }

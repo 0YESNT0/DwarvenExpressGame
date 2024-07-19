@@ -4,23 +4,31 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public List<DialogueLine> NarrativeDialogue;
     public GameObject DialogueUI;
-    public GameObject AlchemyUI;
-    public GameObject SmithingUI;
-    public GameObject TradingUI;
     public GameObject Player;
     public GameObject QuestManager;
     public GameObject InventoryManager;
 
     public GameObject InGameUI;
     public GameObject GameOverPanel;
+
+    //gameover text
     public GameObject LoseOnTimeoutTxt;
     public GameObject LoseOnDeliveryFailTxt;
+    public GameObject GameOverTXT;
+    //win text
+    public GameObject WinMessage;
+
 
     private bool isLose = false;
 
     void Start(){
         InGameUI.SetActive(true);
+        Player.GetComponent<PlayerController>().InteractSystem.canInteract = false;
+        Player.GetComponent<PlayerController>().canMove = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true; 
     }
 
     void Update(){
@@ -37,6 +45,7 @@ public class GameManager : MonoBehaviour
             //shows cursor
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            WinMessage.SetActive(false);
             if(QuestManager.GetComponent<QuestManager>().GlobalTimerCurrentValue <= 0){
                 LoseOnTimeoutTxt.SetActive(true);
                 LoseOnDeliveryFailTxt.SetActive(false);
@@ -49,6 +58,16 @@ public class GameManager : MonoBehaviour
             }
         }
         
+    }
+    public void WinGame(){
+        QuestManager.GetComponent<QuestManager>().PauseAllTimers();
+        //hides fail messages
+        LoseOnDeliveryFailTxt.SetActive(false);
+        LoseOnTimeoutTxt.SetActive(false);
+        GameOverTXT.SetActive(false);
+        
+        GameOverPanel.SetActive(true);
+        WinMessage.SetActive(true);
     }    
 
 }
