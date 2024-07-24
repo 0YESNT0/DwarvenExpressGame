@@ -84,12 +84,11 @@ public class UpgradeManager : MonoBehaviour
     public void UpgradeSpeed(){
         //do check if player has enough gold
         if(questManager.TotalGold > SpeedCurrentcost){
-            SpeedLvl++;
-            SpeedCurrentcost = SpeedBasecost * SpeedLvl;
-            Player.walkingspeedMod = Player.walkingspeedIncrease * SpeedLvl;
             //reduce gold
             questManager.RemoveGold(SpeedCurrentcost);
-
+            SpeedLvl++;
+            SpeedCurrentcost = SpeedBasecost * SpeedLvl;
+            Player.walkingspeedMod = Player.walkingspeedIncrease * SpeedLvl;            
             //updates text in upgrade ui
             SpeedCostTXT.text = SpeedCurrentcost.ToString();
             SpeedLVLTXT.text = SpeedLvl.ToString();
@@ -100,11 +99,10 @@ public class UpgradeManager : MonoBehaviour
     }
     public void UpgradeJump(){
         if(questManager.TotalGold > JumpCurrentcost){
+            questManager.RemoveGold(JumpCurrentcost);
             JumpLvl++;
             JumpCurrentcost = JumpBasecost * JumpLvl;
             Player.JumpHeightMod = Player.JumpHeightIncrease * JumpLvl;
-            //reduce gold
-            questManager.RemoveGold(JumpCurrentcost);
 
             //updates text in upgrade ui
             JumpCostTXT.text = JumpCurrentcost.ToString();
@@ -113,12 +111,11 @@ public class UpgradeManager : MonoBehaviour
     }
     public void UpgradeInventorySlots(){
         if(questManager.TotalGold > InvCurrentcost){
+            questManager.RemoveGold(InvCurrentcost);
             InvLvl++;
             InvCurrentcost = InvBasecost * InvLvl;
             Player.inventorySlotsMod = Player.inventorySlotsIncrease * InvLvl;
-            //reduce gold
-            questManager.RemoveGold(InvCurrentcost);
-
+            
             //updates text in upgrade ui
             InvCostTXT.text = InvCurrentcost.ToString();
             InvLVLTXT.text = InvLvl.ToString();
@@ -127,11 +124,12 @@ public class UpgradeManager : MonoBehaviour
     }
     public void UpgradeWeightCap(){
         if(questManager.TotalGold > WeightCurrentcost){
+            //reduce gold
+            questManager.RemoveGold(WeightCurrentcost);
             WeightLvl++;
             WeightCurrentcost = WeightBasecost * WeightLvl;
             Player.WeightCapMod = Player.WeightCapIncrease * WeightLvl;
-            //reduce gold
-            questManager.RemoveGold(WeightCurrentcost);
+            
 
             //updates text in upgrade ui
             WeightCostTXT.text = WeightCurrentcost.ToString();

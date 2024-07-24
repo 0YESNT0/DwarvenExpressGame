@@ -105,8 +105,11 @@ public class QuestManager : MonoBehaviour
         UpdateQuestList();
     }
     public void CompleteQuest(string questID){
-        QuestData value = PlayerQuests.Find(item => item.QuestID == questID);  
-        AddGold(value.QuestReward + (int)value.QuestTime);      
+        QuestData value = PlayerQuests.Find(item => item.QuestID == questID); 
+        int goldcalcu;
+        int itemweight = inventoryManager.ItemDatabase.Find(item => item.ItemID == value.QuestItem).Weight;
+        goldcalcu = (int)(value.QuestReward + itemweight + value.QuestTime);
+        AddGold(goldcalcu);      
         PlayerQuests.Remove(value);
         UpdateQuestList(); 
         RandomizeQuestGiver();                    

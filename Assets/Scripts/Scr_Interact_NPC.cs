@@ -15,7 +15,7 @@ public class Scr_Interact_NPC : Scr_Interactable
     public string QuestItemToDeliver;
     public int DeliveryDifficulty;
     public bool hasQuest = false; 
-    public int QuestTimer = 5;   
+    private int QuestTimer;   
 
     public DialogueManager DlgManager;  
     public InventoryManager invManager;
@@ -24,8 +24,8 @@ public class Scr_Interact_NPC : Scr_Interactable
 
     void Start(){
         //Sets managers
-
-        CheckIfShowQuestIdentifier();
+        QuestTimer = 180;       
+        CheckIfShowQuestIdentifier();    
     }
     public override void Interact()
     {
@@ -43,15 +43,15 @@ public class Scr_Interact_NPC : Scr_Interactable
                 rnd = UnityEngine.Random.Range(0, (NPCPool.transform.childCount));
                 npcTarget = NPCPool.transform.GetChild(rnd).gameObject;
             }            
-            
+            float npcdistance = Vector3.Distance(gameObject.transform.position,npcTarget.transform.position);
             newquest.QuestInfo = "Deliver " + itemToAdd.ItemName + " to " + npcTarget.GetComponent<Scr_Interact_NPC>().id;
             //need to work on randomizing quest time randomization
-            newquest.QuestTime = QuestTimer;
+            newquest.QuestTime = QuestTimer * ((npcdistance/100) + 0.20f);
             //sets quest target
             newquest.QuestTarget = npcTarget;
             //sets initial distance to delivery target
-            newquest.Distance = Vector3.Distance(gameObject.transform.position,npcTarget.transform.position);
-            newquest.QuestReward = (int)newquest.Distance/2;
+            newquest.Distance = npcdistance;
+            newquest.QuestReward = (int)newquest.Distance;
             //quest item id
             newquest.QuestItem = QuestItemToDeliver;
 
