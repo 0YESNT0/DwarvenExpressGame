@@ -45,7 +45,12 @@ public class GameManager : MonoBehaviour
             //shows cursor
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            //disables playermovement and interaction
+            Player.GetComponent<PlayerController>().InteractSystem.canInteract = false;
+            Player.GetComponent<PlayerController>().canMove = false;
+
             WinMessage.SetActive(false);
+
             if(QuestManager.GetComponent<QuestManager>().GlobalTimerCurrentValue <= 0){
                 LoseOnTimeoutTxt.SetActive(true);
                 LoseOnDeliveryFailTxt.SetActive(false);
@@ -66,6 +71,13 @@ public class GameManager : MonoBehaviour
         LoseOnTimeoutTxt.SetActive(false);
         GameOverTXT.SetActive(false);
         
+        //shows cursor
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        //disables playermovement and interaction
+        Player.GetComponent<PlayerController>().InteractSystem.canInteract = false;
+        Player.GetComponent<PlayerController>().canMove = false;
+
         GameOverPanel.SetActive(true);
         WinMessage.SetActive(true);
     }    

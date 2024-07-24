@@ -36,6 +36,7 @@ public class MenuButtonScript : MonoBehaviour
     }
 
     public void Startnarrative(){
+        Qmanager.AllowGameOverCheck = true;
         DurationSelectionPanel.SetActive(false);
         DialogueM.StartDialogue(gManager.NarrativeDialogue,null,DeactivatePanels);
     }

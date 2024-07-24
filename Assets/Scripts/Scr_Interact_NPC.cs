@@ -15,7 +15,7 @@ public class Scr_Interact_NPC : Scr_Interactable
     public string QuestItemToDeliver;
     public int DeliveryDifficulty;
     public bool hasQuest = false; 
-    public int QuestTimer = 100;   
+    public int QuestTimer = 5;   
 
     public DialogueManager DlgManager;  
     public InventoryManager invManager;
