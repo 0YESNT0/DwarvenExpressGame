@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Scr_Interact_ShopKeep : Scr_Interactable
 {
-    public List<DialogueLine> RegularDialogueLines;
+    public List<DialogueData> RegularDialogueLines;
     public DialogueManager DlgManager;  
     public List<GameObject> UIToOpen;
 
     public override void Interact(){
-        DlgManager.StartDialogue(RegularDialogueLines,UIToOpen);
+        int rnd = UnityEngine.Random.Range(0,RegularDialogueLines.Count - 1);
+        DlgManager.StartDialogue(RegularDialogueLines[rnd].Dialogueline, UIToOpen);         
     }    
 }

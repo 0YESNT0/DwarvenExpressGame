@@ -7,10 +7,16 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
+public class DialogueData
+{
+    public List<DialogueLine> Dialogueline;
+}
+
+[System.Serializable]
 public class DialogueLine
 {
     public string TalkerName;
-    public string DialogueText;
+    public string Dialogue;
 }
 
 
@@ -94,7 +100,7 @@ public class DialogueManager : MonoBehaviour
             dialogueTalkerName.text = dialogueList[currentDialogueLine].TalkerName;                    
         }
         
-        dialogueText.text = dialogueList[currentDialogueLine].DialogueText;
+        dialogueText.text = dialogueList[currentDialogueLine].Dialogue;
         
     }
     public void NextDialogueLine(){

@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class Scr_Interact_NPC : Scr_Interactable
 {
-    public List<DialogueLine> RegularDialogueLines;
-    public List<DialogueLine> QuestGiveDialogueLines;
-    public List<DialogueLine> ItemGetLines;
+    public List<DialogueData> RegularDialogueLines;
+    public List<DialogueData> QuestGiveDialogueLines;
+    public List<DialogueData> ItemGetLines;
     public GameObject NPCPool;
     public string ItemToReceive;
 
@@ -61,24 +61,27 @@ public class Scr_Interact_NPC : Scr_Interactable
             npcTarget.GetComponent<Scr_Interact_NPC>().ItemToReceive = itemToAdd.ItemID;
 
             questMngr.AddQuest(newquest);
-
-            DlgManager.StartDialogue(QuestGiveDialogueLines);               
+            rnd = UnityEngine.Random.Range(0,QuestGiveDialogueLines.Count - 1);
+            DlgManager.StartDialogue(QuestGiveDialogueLines[rnd].Dialogueline);               
             hasQuest = false;         
         }
         else if(isQuestTarget){
+            isQuestTarget = false;
             //completes delivery if they are a delivery target
             questMngr.CompleteQuest(questIDToComplete);
-            DlgManager.StartDialogue(ItemGetLines);
+            int rnd = UnityEngine.Random.Range(0,ItemGetLines.Count - 1);
+            DlgManager.StartDialogue(ItemGetLines[rnd].Dialogueline); 
             if(invManager.Hasitem(ItemToReceive) != null){
                 invManager.RemoveItem(ItemToReceive);
             }
             
             questIDToComplete = null;
-            isQuestTarget = false;
+            
             
         }
         else{
-            DlgManager.StartDialogue(RegularDialogueLines);
+            int rnd = UnityEngine.Random.Range(0,RegularDialogueLines.Count - 1);
+            DlgManager.StartDialogue(RegularDialogueLines[rnd].Dialogueline); 
         }
         CheckIfShowQuestIdentifier();
     }

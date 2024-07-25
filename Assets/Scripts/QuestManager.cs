@@ -148,7 +148,7 @@ public class QuestManager : MonoBehaviour
             if(child.gameObject.GetComponent<WaypointScript>().questData != null){
                 WaypointScript childscript = child.GetComponent<WaypointScript>();
                 Vector3 pos =  childscript.questData.QuestTarget.transform.position;
-                pos.y = pos.y + 1;
+                pos.y = pos.y + 2;
                 Vector2 ScreenPos = Camera.main.WorldToScreenPoint(pos);
                 //clamps waypoint to edges of screen
                 float maxX = Screen.width  - waypointOffset;
