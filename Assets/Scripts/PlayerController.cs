@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector]
     public bool canMove = true;
-    
+    public bool canJump = true;
  
 
     // Start is called before the first frame update
@@ -60,7 +60,19 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false; 
         currentWeight = 0;                     
     }
-    
+
+    public void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.normal.y <= 0.6)
+        {
+            canJump = false;
+        }
+        else
+        {
+            canJump = true;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -83,12 +95,10 @@ public class PlayerController : MonoBehaviour
         moveDirection.y -= gravity * Time.deltaTime;
 
         characterController.Move(moveDirection * Time.deltaTime);
-
-        
         
 
         if(canMove){
-            if(Input.GetButton("Jump") && characterController.isGrounded){
+            if(Input.GetButton("Jump") && characterController.isGrounded && canJump){
                 moveDirection.y = jumpHeight + JumpHeightMod;
             }
             else{
@@ -111,7 +121,4 @@ public class PlayerController : MonoBehaviour
         currentWeight = totalweight;
     }
     //checks for closest interactable object
-    
-
-    
 }
