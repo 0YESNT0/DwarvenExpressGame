@@ -54,6 +54,7 @@ public class QuestManager : MonoBehaviour
         TotalGoldTXT.text = TotalGold.ToString();
         RandomizeQuestGiver();                  
         inventoryManager.updateInvWeight();
+        GameTimer.StopTimer();
     }
 
     void Update(){        
@@ -108,7 +109,7 @@ public class QuestManager : MonoBehaviour
         QuestData value = PlayerQuests.Find(item => item.QuestID == questID); 
         int goldcalcu;
         int itemweight = inventoryManager.ItemDatabase.Find(item => item.ItemID == value.QuestItem).Weight;
-        goldcalcu = (int)(value.QuestReward + itemweight + value.QuestTime);
+        goldcalcu = (int)(value.QuestReward + (itemweight * 2) + value.QuestTime);
         AddGold(goldcalcu);      
         PlayerQuests.Remove(value);
         UpdateQuestList(); 

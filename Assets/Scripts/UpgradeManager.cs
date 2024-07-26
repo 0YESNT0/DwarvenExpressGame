@@ -25,10 +25,10 @@ public class UpgradeManager : MonoBehaviour
     public int InvBasecost;
     public int WeightBasecost;
 
-    public int SpeedLvl = 0;
-    public int JumpLvl = 0;
-    public int InvLvl = 0;
-    public int WeightLvl = 0;
+    public int SpeedLvl;
+    public int JumpLvl;
+    public int InvLvl;
+    public int WeightLvl;
 
     private int SpeedCurrentcost;
     private int JumpCurrentcost;
@@ -62,6 +62,10 @@ public class UpgradeManager : MonoBehaviour
         WeightLVLTXT.text = WeightLvl.ToString();
 
         MedicineCostTXT.text = MedicineCost.ToString();
+        SpeedCurrentcost = SpeedBasecost;
+        JumpCurrentcost = JumpBasecost;
+        InvCurrentcost = InvBasecost;
+        WeightCurrentcost = WeightBasecost;
         
     }
 

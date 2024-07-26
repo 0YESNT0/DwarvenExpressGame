@@ -14,11 +14,9 @@ public class PlayerController : MonoBehaviour
     public RaycastController InteractSystem;
     CharacterController characterController;
     UnityEngine.Vector3 moveDirection = UnityEngine.Vector3.zero;
+    public MenuButtonScript MenuScript;    
     float rotationX = 0;
-    [Header("Values")]
-    public float runningSpeed = 11.5f;
-    
-    
+    [Header("Values")]        
     public float gravity = 20.0f;
     public float gravityscale = 1.0f;
     public float lookSpeed = 2.0f;
@@ -84,11 +82,9 @@ public class PlayerController : MonoBehaviour
         else{
             currentwalkSpeed = walkingSpeed + walkingspeedMod;
         }
-        
-
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        float cursSpeedX = canMove ? (isRunning ? runningSpeed : currentwalkSpeed) * Input.GetAxis("Vertical") : 0;
-        float cursSpeedY = canMove ? (isRunning ? runningSpeed : currentwalkSpeed) * Input.GetAxis("Horizontal") : 0;
+           
+        float cursSpeedX = canMove ? currentwalkSpeed * Input.GetAxis("Vertical") : 0;
+        float cursSpeedY = canMove ? currentwalkSpeed * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * cursSpeedX) + (right * cursSpeedY);
         moveDirection.y = movementDirectionY;
@@ -112,7 +108,12 @@ public class PlayerController : MonoBehaviour
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
             playerCamera.transform.localRotation = UnityEngine.Quaternion.Euler(rotationX, 0 ,0);
             transform.rotation *= UnityEngine.Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0 );
+            if(Input.GetKey(KeyCode.Escape)){
+                MenuScript.PauseGame();
+            }
         }
+
+        
 
 
     }
