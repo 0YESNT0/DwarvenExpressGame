@@ -13,6 +13,7 @@ public class MenuButtonScript : MonoBehaviour
     public QuestManager Qmanager;
     public DialogueManager DialogueM;
     public GameManager gManager;
+    public AudioSource BGmusic;
 
     // Start is called before the first frame update
     public void QuitBTN(){
@@ -40,6 +41,7 @@ public class MenuButtonScript : MonoBehaviour
         Qmanager.AllowGameOverCheck = true;
         DurationSelectionPanel.SetActive(false);
         DialogueM.StartDialogue(gManager.NarrativeDialogue,null,DeactivatePanels);
+        PlayMusic();
     }
 
     public void ResumeGame(){
@@ -62,6 +64,9 @@ public class MenuButtonScript : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true; 
         Qmanager.PauseAllTimers();
+    }
+    public void PlayMusic(){
+        BGmusic.Play();
     }
 
 }
